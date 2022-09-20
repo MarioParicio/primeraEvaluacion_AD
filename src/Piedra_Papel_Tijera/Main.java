@@ -1,6 +1,5 @@
 package Piedra_Papel_Tijera;
 import java.util.Scanner;
-import java.util.Arrays;
 import java.util.Random;
 
 
@@ -42,13 +41,13 @@ public class Main {
             }
             if (gameMode.equals("m")){
                 gameStarted = true;
-                getGameVersusPc();
+                GameVersusPc();
             }
         }
 
     }
 
-    private static void getGameVersusPc() {
+    private static void GameVersusPc() {
 
         String choice = "";
 
@@ -57,8 +56,8 @@ public class Main {
             choice = sc.nextLine();
             player1Choice = choice;
         } else if(turn == "2"){
-            sc.nextLine();
             choice = validActions[(int) (rm.nextInt(3- 0) + 0)];
+            System.out.println(choice);
             player2Choice = choice;
         }
         try {
@@ -68,12 +67,9 @@ public class Main {
             gameVersusPlayer();
         }
         if (turn == "1"){
-            for (int i = 0; i < 15; i++) {
-                System.out.println("");
-            }
             System.out.println("El jugador 1 ya ha seleccionado");
             turn = "2";
-            gameVersusPlayer();
+            GameVersusPc();
         } else if (turn == "2") {
         }
         {
