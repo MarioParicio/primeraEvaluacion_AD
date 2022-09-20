@@ -1,4 +1,6 @@
 package Piedra_Papel_Tijera;
+import java.util.Dictionary;
+import java.util.HashMap;
 import java.util.Scanner;
 import java.util.Random;
 
@@ -13,11 +15,16 @@ public class Main {
     static String player2Choice = "";
 
     static Random rm = new Random();
+
+
     static String[] validActions = new String[]{"p", "x", "t"};
+    static HashMap<String, String> rockPaperScissors = new HashMap<String, String>();
 
     public static void main(String[] args) {
 
-
+        rockPaperScissors.put("p", "piedra");
+        rockPaperScissors.put("x", "papel");
+        rockPaperScissors.put("t", "tijera");
 
         String[] gameModeValidValues = new String[]{"j", "m"};
         boolean gameStarted = false;
@@ -51,13 +58,14 @@ public class Main {
 
         String choice = "";
 
-        System.out.println("Jugador " + turn + ": Seleccione piedra(p), papel(x) o tijera(t)");
-        if (turn == "1") {
+
+        if (turn.equals("1")) {
+            System.out.println("Jugador " + turn + ": Seleccione piedra(p), papel(x) o tijera(t)");
             choice = sc.nextLine();
             player1Choice = choice;
-        } else if(turn == "2"){
-            choice = validActions[(int) (rm.nextInt(3- 0) + 0)];
-            System.out.println(choice);
+        } else if(turn.equals("2")){
+            choice = validActions[(rm.nextInt(3))];
+            System.out.println("El ordenador a seleccionado:" + rockPaperScissors.get(choice));
             player2Choice = choice;
         }
         try {
@@ -66,26 +74,26 @@ public class Main {
             System.out.println(e.getMessage());
             gameVersusPlayer();
         }
-        if (turn == "1"){
-            System.out.println("El jugador 1 ya ha seleccionado");
+        if (turn.equals("1")){
+            System.out.println("Has seleccionado: " + rockPaperScissors.get(player1Choice).toString());
             turn = "2";
             GameVersusPc();
-        } else if (turn == "2") {
-        }
-        {
+        } else if (turn.equals("2")) {
             comprobarGanador(player1Choice, player2Choice);
         }
+
     }
 
     private static void gameVersusPlayer() {
         String choice = "";
 
         System.out.println("Jugador " + turn + ": Seleccione piedra(p), papel(x) o tijera(t)");
-        if (turn == "1") {
+        if (turn.equals("1")) {
             choice = sc.nextLine();
             player1Choice = choice;
-        } else if(turn == "2"){
+        } else if(turn.equals("2")){
             choice = sc.nextLine();
+            player2Choice = choice;
 
         }
         try {
@@ -94,52 +102,47 @@ public class Main {
             System.out.println(e.getMessage());
             gameVersusPlayer();
         }
-        if (turn == "1"){
+        if (turn.equals("1")){
             for (int i = 0; i < 15; i++) {
-                System.out.println("");
+                System.out.println("\n\n\n\n\n\n\n\n");
             }
             System.out.println("El jugador 1 ya ha seleccionado");
             turn = "2";
             gameVersusPlayer();
-        } else if (turn == "2") {
-        }
-        {
+        } else if (turn.equals("2")) {
+            System.out.println("El jugador 1 ha seleccionado: " + rockPaperScissors.get(player1Choice) + " el jugador 2 ya ha seleccionado: " + rockPaperScissors.get(player2Choice));
+            System.out.println("El ganador es: " );
             comprobarGanador(player1Choice, player2Choice);
         }
+
 
     }
 
     private static void comprobarGanador(String player1Choice, String player2Choice) {
 
+
         switch (player1Choice) {
             case "p":
-                if (player2Choice.equals("p")) {
-                    System.out.println("Empate");
-                    break;
-                } else if (player2Choice.equals("x")){
-                    System.out.println("Gana jugador 1");
-                } else if (player2Choice.equals("t")){
-                    System.out.println("Gana jugador 2");
+                switch (player2Choice) {
+                    case "p" -> System.out.print("Empate");
+                    case "x" -> System.out.print("Gana jugador 1");
+                    case "t" ->  System.out.print("Gana jugador 2");
                 }
                 break;
 
             case "x":
-                if (player2Choice.equals("p")) {
-                    System.out.println("Gana jugador 1");
-                } else if (player2Choice.equals("x")) {
-                    System.out.println("Empate");
-                } else if (player2Choice.equals("t")) {
-                    System.out.println("Gana jugador 2");
+                switch (player2Choice) {
+                    case "p" -> System.out.print("Gana jugador 1");
+                    case "x" -> System.out.print("Empate");
+                    case "t" -> System.out.print("Gana jugador 2");
                 }
                 break;
                 case "t":
-                if (player2Choice.equals("p")) {
-                    System.out.println("Gana jugador 2");
-                } else if (player2Choice.equals("x")) {
-                    System.out.println("Gana jugador 1");
-                } else if (player2Choice.equals("t")) {
-                    System.out.println("Empate");
-                }
+                    switch (player2Choice) {
+                        case "p" -> System.out.print("Gana jugador 2");
+                        case "x" -> System.out.print("Gana jugador 1");
+                        case "t" -> System.out.print("Empate");
+                    }
                 break;
         }
     }
@@ -147,8 +150,8 @@ public class Main {
     public static void valorNoValido(String valorIntroducido, String[] valoresValidos) throws valueNotValidException {
 
         int j = 0;
-        for (int i = 0; i < valoresValidos.length; i++) {
-            if (!valoresValidos[i].equals(valorIntroducido)) {
+        for (String valoresValido : valoresValidos) {
+            if (!valoresValido.equals(valorIntroducido)) {
                 j++;
             }
         }
